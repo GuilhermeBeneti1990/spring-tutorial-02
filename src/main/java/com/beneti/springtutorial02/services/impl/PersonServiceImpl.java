@@ -37,6 +37,20 @@ public class PersonServiceImpl implements PersonService {
         return person;
     }
 
+    public Person create(Person person) {
+        logger.info("Creating person...");
+        return person;
+    }
+
+    public Person update(Person person) {
+        logger.info("Updating person...");
+        return person;
+    }
+
+    public void delete(String id) {
+        logger.info("Deleting person...");
+    }
+
     private Person mockPerson(int i) {
         Person person = new Person();
         person.setId(new AtomicLong().incrementAndGet());

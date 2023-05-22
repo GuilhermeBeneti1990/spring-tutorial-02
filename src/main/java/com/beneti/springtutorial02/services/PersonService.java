@@ -9,5 +9,8 @@ public interface PersonService {
 
     public List<Person> findAll();
     public Person findById(String id);
+    public Person create(Person person);
+    public Person update(Person person);
+    public void delete(String id);
 
 }
