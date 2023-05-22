@@ -8,35 +8,35 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/people")
+@RequestMapping("/person")
 public class PersonController {
 
     @Autowired
-    PersonService personService;
+    PersonService service;
 
-    @GetMapping
+    @GetMapping("/all")
     public List<Person> getAllPeople() {
-        return personService.findAll();
+        return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public Person getPerson(@PathVariable("id") String id) {
-        return personService.findById(id);
+    public Person getPerson(@PathVariable("id") Long id) {
+        return service.findById(id);
     }
 
     @PostMapping
     public Person createPerson(@RequestBody Person person) {
-        return personService.create(person);
+        return service.create(person);
     }
 
     @PutMapping("/{id}")
-    public Person updatePerson(@PathVariable("id") String id, @RequestBody Person person) {
-        return personService.update(person);
+    public Person updatePerson(@PathVariable("id") Long id, @RequestBody Person person) {
+        return service.update(person);
     }
 
     @DeleteMapping("/{id}")
-    public void deletePerson(@PathVariable("id") String id) {
-        personService.delete(id);
+    public void deletePerson(@PathVariable("id") Long id) {
+        service.delete(id);
     }
 
 }
