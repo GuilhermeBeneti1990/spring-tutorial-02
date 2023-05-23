@@ -1,6 +1,8 @@
 package com.beneti.springtutorial02.services.impl;
 
+import com.beneti.springtutorial02.dtos.PersonDTO;
 import com.beneti.springtutorial02.exceptions.ResourceNotFoundException;
+import com.beneti.springtutorial02.mapper.DozerMapper;
 import com.beneti.springtutorial02.models.Person;
 import com.beneti.springtutorial02.repositories.PersonRepository;
 import com.beneti.springtutorial02.services.PersonService;
@@ -18,24 +20,32 @@ public class PersonServiceImpl implements PersonService {
 
     private Logger logger = Logger.getLogger(PersonService.class.getName());
 
-    public List<Person> findAll() {
-        return repository.findAll();
+    public List<PersonDTO> findAll() {
+        logger.info("Finding all people...");
+
+        return DozerMapper.parseListObjects(repository.findAll(), PersonDTO.class);
     }
 
-    public Person findById(Long id) {
+    public PersonDTO findById(Long id) {
         logger.info("Finding person with id: " + id);
 
-        return repository.findById(id)
+        var entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+
+        return DozerMapper.parseObject(entity, PersonDTO.class);
     }
 
-    public Person create(Person person) {
+    public PersonDTO create(PersonDTO person) {
         logger.info("Creating person...");
 
-        return repository.save(person);
+        var entity = DozerMapper.parseObject(person, Person.class);
+        var dto = DozerMapper.parseObject(repository.save(entity), PersonDTO.class);
+
+        return dto;
+
     }
 
-    public Person update(Person person) {
+    public PersonDTO update(PersonDTO person) {
         logger.info("Updating person...");
 
         var personToUpdate = repository.findById(person.getId())
@@ -46,7 +56,9 @@ public class PersonServiceImpl implements PersonService {
         personToUpdate.setAddress(person.getAddress());
         personToUpdate.setGender(person.getGender());
 
-        return repository.save(person);
+        var dto = DozerMapper.parseObject(repository.save(personToUpdate), PersonDTO.class);
+
+        return dto;
     }
 
     public void delete(Long id) {
