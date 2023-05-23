@@ -1,8 +1,10 @@
 package com.beneti.springtutorial02.services.impl;
 
 import com.beneti.springtutorial02.dtos.PersonDTO;
+import com.beneti.springtutorial02.dtos.PersonDTOv2;
 import com.beneti.springtutorial02.exceptions.ResourceNotFoundException;
 import com.beneti.springtutorial02.mapper.DozerMapper;
+import com.beneti.springtutorial02.mapper.custom.PersonMapper;
 import com.beneti.springtutorial02.models.Person;
 import com.beneti.springtutorial02.repositories.PersonRepository;
 import com.beneti.springtutorial02.services.PersonService;
@@ -17,6 +19,9 @@ public class PersonServiceImpl implements PersonService {
 
     @Autowired
     PersonRepository repository;
+
+    @Autowired
+    PersonMapper mapper;
 
     private Logger logger = Logger.getLogger(PersonService.class.getName());
 
@@ -40,6 +45,16 @@ public class PersonServiceImpl implements PersonService {
 
         var entity = DozerMapper.parseObject(person, Person.class);
         var dto = DozerMapper.parseObject(repository.save(entity), PersonDTO.class);
+
+        return dto;
+
+    }
+
+    public PersonDTOv2 createV2(PersonDTOv2 person) {
+        logger.info("Creating person...");
+
+        var entity = mapper.convertDTOToEntity(person);
+        var dto = mapper.convertEntityToDTO(repository.save(entity));
 
         return dto;
 

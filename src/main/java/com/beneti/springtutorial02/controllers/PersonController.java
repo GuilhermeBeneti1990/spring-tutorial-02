@@ -1,6 +1,7 @@
 package com.beneti.springtutorial02.controllers;
 
 import com.beneti.springtutorial02.dtos.PersonDTO;
+import com.beneti.springtutorial02.dtos.PersonDTOv2;
 import com.beneti.springtutorial02.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,11 @@ public class PersonController {
     @PostMapping
     public PersonDTO createPerson(@RequestBody PersonDTO person) {
         return service.create(person);
+    }
+
+    @PostMapping("/v2")
+    public PersonDTOv2 createPersonV2(@RequestBody PersonDTOv2 person) {
+        return service.createV2(person);
     }
 
     @PutMapping("/{id}")
